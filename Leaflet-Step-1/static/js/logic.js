@@ -1,5 +1,18 @@
 // Creating the map for leaflet
 
+// Colors the circles.
+function circleColor(depth){
+  var circcol
+  if (depth < 70){
+    circcol = "green";
+  }
+  else{
+    circcol = "pink";
+  };
+
+  return circcol; 
+};
+
 var myMap = L.map("map",{
     center: [40.73, -74.0059],
     zoom: 4
@@ -15,38 +28,30 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: API_KEY
   }).addTo(myMap);
 
-  // Loop through the cities array and create one marker for each city, bind a popup containing its name and population add it to the map
-  // for (var i = 0; i < cities.length; i++) {
-  //   var city = cities[i];
-  //   L.marker(city.location)
-  //     .bindPopup("<h1>" + city.name + "</h1> <hr> <h3>Population " + city.population + "</h3>")
-  //     .addTo(myMap);
-  // }
-
-var latLng = [];
-var mag = []
 
   // Reading the geojsonfile
 var geojson = d3.json('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson',function(data){
-  console.log(data);
 
   // To test the enrties for the geojson.
   var geoFeatures = data.features;
 
   // searches the coordinates of the geometry.
-  for (var i = 0; i < 10; i++){
+  for (var i = 0; i < geoFeatures.length; i++){
     var earthquake = geoFeatures[i];
 
-    var latlng = [earthquake.geometry.coordinates[0],earthquake.geometry.coordinates[1]];
+    var latlng = [earthquake.geometry.coordinates[1],earthquake.geometry.coordinates[0]];
     var depth = earthquake.geometry.coordinates[2];
-    console.log(latlng);
-    console.log(depth);
+    var mag = earthquake.properties.mag;
+
+    console.log(earthquake);
+    L.circle(latlng,{
+      color: "black",
+      fillColor: circleColor(depth),
+      radius: mag * 10
+    }).bindPopup("This is a marker")
+      .addTo(myMap)
   };
   // searches the geojson for the coordinates
   console.log("Eyy");
-
-  // Using geojson for the pointer creation.
-  // Will be using the point to layer function.
-
 
 });
