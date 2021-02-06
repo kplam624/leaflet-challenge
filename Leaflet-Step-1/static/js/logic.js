@@ -2,21 +2,20 @@
 
 // Colors the circles based on depth.
 function circleColor(depth){
-  var circcol
   if (depth < 10){
-    circcol = "#003300";
+    return "#003300";
   }
   else if (depth < 30){
-    circcol = "#009900"
+    return "#009900"
   }
   else if (depth < 50){
-    circcol = "#99ff33"
+    return "#99ff33"
   }
   else if (depth < 70){
-    circcol = "#ff0000"
+    return "#ff0000"
   }
   else{
-    circcol = "#800000";
+    return "#800000";
   };
 
   return circcol; 
@@ -26,6 +25,25 @@ var myMap = L.map("map",{
     center: [38.8003, -102.6216],
     zoom: 3
 });
+
+var legend = L.control({position: "bottomleft"});
+
+legend.onAdd = function (myMap) {
+  var div = L.DomUtil.create('div', 'info legend'),
+  grades = [-10, 10, 30, 50, 70],
+  labels = ['Earthquake'];
+
+  
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+      div.innerHTML +=
+          '<i style="background:' + circleColor(grades[i] + 1) + '"></i> ' +
+          grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+  }
+  return div;
+};
+
+legend.addTo(myMap);
 
 // Tile layer for the map.
 L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -37,7 +55,7 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: API_KEY
   }).addTo(myMap);
 
-  // Reading the geojsonfile
+// Reading the geojsonfile
 d3.json('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojson',function(data){
 
   // To test the enrties for the geojson.
@@ -51,8 +69,6 @@ d3.json('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geo
     var depth = earthquake.geometry.coordinates[2];
     var mag = earthquake.properties.mag;
     var location = earthquake.properties.place;
-
-    console.log(earthquake);
 
     L.circleMarker(latlng,{
       color: "black",
