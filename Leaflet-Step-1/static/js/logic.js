@@ -58,7 +58,7 @@ d3.json('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geo
       color: "black",
       fillColor: circleColor(depth),
       fillOpacity: 1,
-      radius: mag * 2,
+      radius: mag * 3,
     }).bindPopup(`<strong>Location:</strong> ${location} <br> <strong>Magnitude:</strong> ${mag} 
     <br> <strong>Depth: </strong> ${depth} km`)
       .addTo(myMap)
