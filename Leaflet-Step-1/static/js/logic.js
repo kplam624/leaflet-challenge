@@ -3,19 +3,28 @@
 // Colors the circles.
 function circleColor(depth){
   var circcol
-  if (depth < 70){
-    circcol = "green";
+  if (depth < 10){
+    circcol = "#003300";
+  }
+  else if (depth < 30){
+    circcol = "#009900"
+  }
+  else if (depth < 50){
+    circcol = "#99ff33"
+  }
+  else if (depth < 70){
+    circcol = "#ff0000"
   }
   else{
-    circcol = "pink";
+    circcol = "#800000";
   };
 
   return circcol; 
 };
 
 var myMap = L.map("map",{
-    center: [40.73, -74.0059],
-    zoom: 4
+    center: [38.8003, -102.6216],
+    zoom: 3
 });
 
 // Tile layer for the map.
@@ -28,9 +37,8 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: API_KEY
   }).addTo(myMap);
 
-
   // Reading the geojsonfile
-var geojson = d3.json('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson',function(data){
+d3.json('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojson',function(data){
 
   // To test the enrties for the geojson.
   var geoFeatures = data.features;
@@ -44,10 +52,12 @@ var geojson = d3.json('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary
     var mag = earthquake.properties.mag;
 
     console.log(earthquake);
-    L.circle(latlng,{
+
+    L.circleMarker(latlng,{
       color: "black",
       fillColor: circleColor(depth),
-      radius: mag * 10
+      fillOpacity: 1,
+      radius: mag * 2,
     }).bindPopup("This is a marker")
       .addTo(myMap)
   };
