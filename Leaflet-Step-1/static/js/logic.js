@@ -30,11 +30,14 @@ legend.onAdd = function (myMap) {
   var div = L.DomUtil.create('div', 'info legend'),
   grades = [-10, 10, 30, 50, 70],
   labels = [];
-
   
+  var legends = "<h5> Earthquake Magnitudes </h5>";
+
+  div.innerHTML = legends;
+
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
-      console.log(circleColor(grades[i]+1));
+
       div.innerHTML +=
           '<i style="background-color: ' + circleColor(grades[i] + 1) + '"></i> ' +
           grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
