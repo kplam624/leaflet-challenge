@@ -1,4 +1,4 @@
-
+/* Map css */
 body {
   padding: 0;
   margin: 0;
@@ -10,6 +10,7 @@ html {
   height: 100%;
 }
 
+/* css for the legend. */
 .info {
   padding: 6px 8px;
   font: 14px/16px Arial, Helvetica, sans-serif;
